@@ -16,38 +16,48 @@ window.browser = (function () {
 //});
 
 window.addEventListener("load", img_find, false);
+var insertedNodes = [];
+var observer = new MutationObserver(function(mutations) {
+ mutations.forEach(function(mutation) {
+   for (var i = 0; i < mutation.addedNodes.length; i++)
+     insertedNodes.push(mutation.addedNodes[i]);
+ })
+});
+observer.observe(document, { childList: true });
+console.log(insertedNodes);
 
 function img_find() 
 {
     setTimeout(runWhenPageLoaded, 6000);
     function runWhenPageLoaded() {
       var imgs = document.getElementsByTagName("img");
-      var imgSrcs = [];
+      this.imgSrcs = [];      
       for (var i = 0; i < imgs.length; i++) 
       {
         if(imgs[i].src.toLowerCase().includes(".gif")){
-          imgSrcs.push({url: imgs[i].src, alt: imgs[i].alt});
+          this.imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
           
           //Upload File
-          getImageFormUrl(imgs[i].src, function (blobImage) {
+          getImageFormUrl(imgs[i].src, function (blobImage, urlReturned) {
             var formData = new FormData();
             formData.append("gifImage", blobImage);
+            formData.append("originalUri", urlReturned);
 
             var requestOptions = {
               method: 'POST',
               body: formData,
               redirect: 'follow'
             };
-
-            fetch("https://localhost:5001/gif/upload", requestOptions)
-              .then(response => response.text())
-              .then(result => console.log(result))
+            
+            fetch("https://gifdescriptorservice.azurewebsites.net/gif/upload", requestOptions)
+              .then(response => response.json())
+              .then(result => { 
+                var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
+                origImage.img.alt = result.description;
+                console.log(result);
+              })
               .catch(error => console.log('error', error));
         });          
-
-          // Upload File URL
-          // uploadFile(imgs[i].src);
-          //
         } else {
           console.log("Not included " + {url: imgs[i].src, alt: imgs[i].alt});
         }      
@@ -83,7 +93,7 @@ function img_find()
         ia[i] = byteString.charCodeAt(i);
       }
     
-      return callback(new Blob([ia], { type: mimeString }));
+      return callback(new Blob([ia], { type: mimeString }), url);
       }
       
       img.src = url;
