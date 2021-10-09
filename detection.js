@@ -53,7 +53,7 @@ function img_find()
               .then(response => response.json())
               .then(result => { 
                 var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
-                origImage.img.alt = result.description;
+                origImage.img.alt = result.description + ". " + result?.detectedText;
                 console.log(result);
               })
               .catch(error => console.log('error', error));
