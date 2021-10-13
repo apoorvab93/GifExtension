@@ -18,7 +18,7 @@ window.browser = (function () {
 window.addEventListener("load", img_find, false);
 var insertedNodes = [];
 var observer = new MutationObserver(function(mutations) {
- mutations.forEach(function(mutation) {
+ mutations.forEach(function(mutation) {  
    for (var i = 0; i < mutation.addedNodes.length; i++)
      insertedNodes.push(mutation.addedNodes[i]);
  })
@@ -53,7 +53,7 @@ function img_find()
               .then(response => response.json())
               .then(result => { 
                 var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
-                origImage.img.alt = result.description + ". " + result?.detectedText;
+                origImage.img.alt = result.description + ". Text detected in image which says - " + result?.detectedText;
                 console.log(result);
               })
               .catch(error => console.log('error', error));
