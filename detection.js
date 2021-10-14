@@ -15,16 +15,28 @@ window.browser = (function () {
 //  img_find();
 //});
 
-window.addEventListener("load", img_find, false);
-var insertedNodes = [];
-var observer = new MutationObserver(function(mutations) {
- mutations.forEach(function(mutation) {  
-   for (var i = 0; i < mutation.addedNodes.length; i++)
-     insertedNodes.push(mutation.addedNodes[i]);
- })
+//window.addEventListener("load", img_find, false);
+let observer = new MutationObserver(mutations => {
+  let flag = false;
+  for(let mutation of mutations) {
+       for(let addedNode of mutation.addedNodes) {
+           if (addedNode.nodeName === "IMG" || addedNode.getElementsByTagName("img")) {
+               console.log("Inserted image", addedNode);
+               flag = true;
+               break;
+            }
+        }
+        if(flag)
+        {
+            break;
+        }
+   }
+   if(flag) {
+     //setTimeout(runWhenPageLoaded, 8000);
+     img_find();
+   }
 });
-observer.observe(document, { childList: true });
-console.log(insertedNodes);
+observer.observe(document, { childList: true, subtree: true });
 
 function img_find() 
 {
@@ -53,11 +65,15 @@ function img_find()
               .then(response => response.json())
               .then(result => { 
                 var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
-                origImage.img.alt = result.description + ". Text detected in image which says - " + result?.detectedText;
+                origImage.img.alt = result.description;
+                if(result?.detectedText)
+                {
+                  origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
+                }
                 console.log(result);
               })
               .catch(error => console.log('error', error));
-        });          
+        });
         } else {
           console.log("Not included " + {url: imgs[i].src, alt: imgs[i].alt});
         }      
