@@ -44,9 +44,10 @@ function img_find()
     function runWhenPageLoaded() {
       var imgs = document.getElementsByTagName("img");
       this.imgSrcs = [];      
+      var counter = 0;
       for (var i = 0; i < imgs.length; i++) 
       {
-        if(imgs[i].src.toLowerCase().includes(".gif")){
+        if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
           this.imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
           
           //Upload File
@@ -65,14 +66,22 @@ function img_find()
               .then(response => response.json())
               .then(result => { 
                 var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
+                counter++;
                 origImage.img.alt = result.description;
                 if(result?.detectedText)
                 {
                   origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
                 }
                 console.log(result);
+                if(counter === imgs.length)
+                {
+                  alert('Page accessibility ready!');
+                }
               })
-              .catch(error => console.log('error', error));
+              .catch(error => {
+                counter++;
+                console.log('error', error)
+              });
         });
         } else {
           console.log("Not included " + {url: imgs[i].src, alt: imgs[i].alt});
