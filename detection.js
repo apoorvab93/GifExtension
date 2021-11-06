@@ -79,54 +79,59 @@ function img_find()
                 }
               })
               .catch(error => {
-                await sleep(2000);
-                console.log("Original attempt failed and will retry");
-                fetch("https://gifdescriptorservice.azurewebsites.net/gif/upload", requestOptions)
-                  .then(response => response.json())
-                  .then(result => { 
-                    var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
-                    counter++;
-                    origImage.img.alt = result.description;
-                    if(result?.detectedText)
-                    {
-                      origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
-                    }
-                    console.log(result);
-                    if(counter === imgs.length)
-                    {
-                      alert('Page accessibility ready!');
-                    }
-                  })
-                  .catch(error => {
-                      await sleep(2000);
-                      console.log("Second attempt failed and will retry third time");
-                      fetch("https://gifdescriptorservice.azurewebsites.net/gif/upload", requestOptions)
-                        .then(response => response.json())
-                        .then(result => { 
-                          var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
-                          counter++;
-                          origImage.img.alt = result.description;
-                          if(result?.detectedText)
-                          {
-                            origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
-                          }
-                          console.log(result);
-                          if(counter === imgs.length)
-                          {
-                            alert('Page accessibility ready!');
-                          }
-                        })
-                        .catch(error => {
-                          counter++;
-                          console.log('error', error)
-                          if(counter === imgs.length)
-                          {
-                            alert('Page accessibility ready!');
-                          }
-                        });
+                sleep(2000)
+                .then(() =>
+                {
+                  console.log("Original attempt failed and will retry");
+                  fetch("https://gifdescriptorservice.azurewebsites.net/gif/upload", requestOptions)
+                    .then(response => response.json())
+                    .then(result => { 
+                      var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
+                      counter++;
+                      origImage.img.alt = result.description;
+                      if(result?.detectedText)
+                      {
+                        origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
+                      }
+                      console.log(result);
+                      if(counter === imgs.length)
+                      {
+                        alert('Page accessibility ready!');
+                      }
+                    })
+                    .catch(error => {
+                        sleep(2000)
+                        .then(() => {
+                          console.log("Second attempt failed and will retry third time");
+                          fetch("https://gifdescriptorservice.azurewebsites.net/gif/upload", requestOptions)
+                            .then(response => response.json())
+                            .then(result => { 
+                              var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
+                              counter++;
+                              origImage.img.alt = result.description;
+                              if(result?.detectedText)
+                              {
+                                origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
+                              }
+                              console.log(result);
+                              if(counter === imgs.length)
+                              {
+                                alert('Page accessibility ready!');
+                              }
+                            })
+                            .catch(error => {
+                              counter++;
+                              console.log('error', error)
+                              if(counter === imgs.length)
+                              {
+                                alert('Page accessibility ready!');
+                              }
+                            });
 
-                    console.log('error', error)
-                  });
+                        })
+                      console.log('error', error)
+                    });
+                });
 
                 console.log('error', error)
               });
