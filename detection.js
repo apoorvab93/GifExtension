@@ -54,6 +54,26 @@ let observer = new MutationObserver(mutations => {
         twitter_find();
       }     
    }
+   else if (window.location.href.includes('reddit.com')) {
+    let videoDetected = false;
+    for(let mutation of mutations) {
+      for(let addedNode of mutation.addedNodes) {
+          if (addedNode.nodeName === "video" || addedNode.getElementsByTagName("video")) {
+              console.log("Detected video", addedNode);
+              videoDetected = true;
+              break;
+          }
+      }
+      if(videoDetected)
+      {
+        break;
+      }
+    }
+    if(videoDetected) {
+      reddit_find();
+    }     
+
+   }
    else if(flag) {
      //setTimeout(runWhenPageLoaded, 8000);
      img_find();
@@ -289,6 +309,73 @@ function twitter_find()
             }
           })
           .catch(error => {
+            counter++;
+          });
+
+      }
+    }
+  }
+}
+
+function reddit_find()
+{
+  var url = "https://gifdescriptionsservice.azurewebsites.net/gif/uploadvideo";
+  chrome.storage.sync.get(['modelVariant'], function(result) {
+    console.log('Value currently is ' + result.modelVariant);
+    if(result.modelVariant === "enhanced") {
+      url = "https://gifdescriptorservice.azurewebsites.net/gif/uploadvideo"
+    }
+  });
+  setTimeout(runWhenTwitterLoaded, 2000);
+  function runWhenTwitterLoaded()
+  {
+    var imgs = document.getElementsByTagName("video");
+    var imgSrcs = [];      
+    var counter = 0;
+    for (var i = 0; i < imgs.length; i++) 
+    {
+      let current = imgs[i].getElementsByTagName('source')[0];
+      if(current.src.toLowerCase().includes("format=mp4")   && !current.alt){
+        if(window.urlsDetected.includes(current.src.toLowerCase()))
+        {
+          continue;
+        }
+        else
+        {
+          window.urlsDetected.push(current.src.toLowerCase());
+        }
+
+        imgSrcs.push({ img: imgs[i],  url: current.src, alt: current.alt});
+        
+        //Upload File        
+        var formData = new FormData();        
+        formData.append("originalUri", current.src);
+
+        var requestOptions = {
+          method: 'POST',
+          body: formData,
+          redirect: 'follow'
+        };
+
+        fetch(url, requestOptions)
+          .then(response => response.json())
+          .then(result => { 
+            var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
+            counter++;
+            origImage.img.ariaLabel = result.description;
+            origImage.img.tabIndex = 0;
+            if(result?.detectedText)
+            {
+              origImage.img.ariaLabel += ". Text detected in image which says - " + result?.detectedText;              
+            }
+            console.log(result);
+            if(counter === imgs.length)
+            {
+              alert('Page accessibility ready!');
+            }
+          })
+          .catch(error => {
+            counter++;
           });
 
       }
