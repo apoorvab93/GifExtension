@@ -16,6 +16,9 @@ window.browser = (function () {
 //});
 
 //window.addEventListener("load", img_find, false);
+window.urlsDetected = [];
+window.urlsWithText = [];
+
 let observer = new MutationObserver(mutations => {
   let flag = false;
   for(let mutation of mutations) {
@@ -248,6 +251,15 @@ function twitter_find()
     for (var i = 0; i < imgs.length; i++) 
     {
       if(imgs[i].src.toLowerCase().includes(".mp4")   && !imgs[i].alt){
+        if(window.urlsDetected.includes(imgs[i].src.toLowerCase()))
+        {
+          continue;
+        }
+        else
+        {
+          window.urlsDetected.push(imgs[i].src.toLowerCase());
+        }
+
         imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
         
         //Upload File        
@@ -265,10 +277,10 @@ function twitter_find()
           .then(result => { 
             var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
             counter++;
-            origImage.img.alt = result.description;
+            origImage.img.ariaLabel = result.description;            
             if(result?.detectedText)
             {
-              origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
+              origImage.img.ariaLabel += ". Text detected in image which says - " + result?.detectedText;
             }
             console.log(result);
             if(counter === imgs.length)
