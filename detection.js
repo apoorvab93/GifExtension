@@ -94,12 +94,12 @@ function img_find()
   setTimeout(runWhenPageLoaded, 6000);
   function runWhenPageLoaded() {
     var imgs = document.getElementsByTagName("img");
-    this.imgSrcs = [];      
+    var imgSrcs = [];      
     var counter = 0;
     for (var i = 0; i < imgs.length; i++) 
     {
       if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
-        this.imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
+        imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
         
         //Upload File
         getImageFormUrl(imgs[i].src, function (blobImage, urlReturned) {
@@ -119,6 +119,7 @@ function img_find()
               var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
               counter++;
               origImage.img.alt = result.description;
+              origImage.img.style.cssText += " border:10px solid green;"
               if(result?.detectedText)
               {
                 origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
@@ -140,6 +141,7 @@ function img_find()
                     var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
                     counter++;
                     origImage.img.alt = result.description;
+                    origImage.img.style.cssText += " border:10px solid green;"
                     if(result?.detectedText)
                     {
                       origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
@@ -160,6 +162,7 @@ function img_find()
                             var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
                             counter++;
                             origImage.img.alt = result.description;
+                            origImage.img.style.cssText += " border:10px solid green;"
                             if(result?.detectedText)
                             {
                               origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
