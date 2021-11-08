@@ -1,11 +1,11 @@
 {
 
-	"name": "Accessiblity Tool",
+	"name": "Accessibility Tool",
 	"version": "1.0",
 	"manifest_version": 2,
   "author": "Apoorva Bhatnagar",
 	"description": " An ML Tool for GIF Image Description.",
-	"permissions": ["activeTab", "storage"],
+	"permissions": ["activeTab", "storage", "<all_urls>"],
 	"content_scripts": [
 		{
     	"matches": ["<all_urls>"],
@@ -23,14 +23,14 @@
     },
     "page_action": {
       "default_popup": "popup.html",
- 	  "deafult_icon": {
- 	  	"14": "jimages/animation14.png",
- 	  	"16": "jimages/animation16.png",
-        "32": "jimages/animation32.png",
-        "48": "jimages/animation48.png",
-        "128": "jimages/animation128.png",
-        "256": "jimages/animation256.png"
- 	  }
+      "default_icon": {
+        "14": "jimages/animation14.png",
+        "16": "jimages/animation16.png",
+          "32": "jimages/animation32.png",
+          "48": "jimages/animation48.png",
+          "128": "jimages/animation128.png",
+          "256": "jimages/animation256.png"
+      }
  	},
  	"icons": {
       "14": "jimages/animation14.png",

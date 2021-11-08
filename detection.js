@@ -84,11 +84,11 @@ observer.observe(document, { childList: true, subtree: true });
 
 function img_find() 
 {
-  var url = "https://gifdescriptionsservice.azurewebsites.net/gif/upload";
+  var url = "https://gifdescriptionsservice.azurewebsites.net/gif/uploadvideo";
   chrome.storage.sync.get(['modelVariant'], function(result) {
     console.log('Value currently is ' + result.modelVariant);
     if(result.modelVariant === "enhanced") {
-      url = "https://gifdescriptorservice.azurewebsites.net/gif/upload"
+      url = "https://gifdescriptorservice.azurewebsites.net/gif/uploadvideo"
     }
   });
   setTimeout(runWhenPageLoaded, 6000);
@@ -102,10 +102,10 @@ function img_find()
         imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
         
         //Upload File
-        getImageFormUrl(imgs[i].src, function (blobImage, urlReturned) {
+        //getImageFormUrl(imgs[i].src, function (blobImage, urlReturned) {
           var formData = new FormData();
-          formData.append("gifImage", blobImage);
-          formData.append("originalUri", urlReturned);
+          //formData.append("gifImage", blobImage);
+          formData.append("originalUri", imgs[i].src);
 
           var requestOptions = {
             method: 'POST',
@@ -162,7 +162,7 @@ function img_find()
                             var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
                             counter++;
                             origImage.img.alt = result.description;
-                            origImage.img.style.cssText += " border:10px solid green;"
+                            
                             if(result?.detectedText)
                             {
                               origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
@@ -189,7 +189,7 @@ function img_find()
 
               console.log('error', error)
             });
-      });
+      //});
       } else {
         console.log("Not included " + {url: imgs[i].src, alt: imgs[i].alt});
       }      
