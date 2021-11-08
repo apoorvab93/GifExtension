@@ -23,7 +23,7 @@
 8. Once the page is accesible, use a narration tool to hear the web page.
 
 
-#Watch video form of instructions here
+**Watch video form of instructions here**
 https://www.youtube.com/watch?v=Q92oUaEyifw
 
 
