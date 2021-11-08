@@ -298,6 +298,7 @@ function twitter_find()
             var origImage = imgSrcs.find(p => p.url == result.originalImageUri);
             counter++;
             origImage.img.ariaLabel = result.description;            
+            origImage.img.tabIndex = 0;
             if(result?.detectedText)
             {
               origImage.img.ariaLabel += ". Text detected in image which says - " + result?.detectedText;
