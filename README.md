@@ -16,7 +16,7 @@ Open the following link in firefox -  about:debugging#/runtime/this-firefox
 5. Enable developer mode
  ![image](https://user-images.githubusercontent.com/56744800/140815416-b8ce5295-5023-4483-a26f-419f2246ba5f.png)
 
-6. Click on Load Unpacked and select the root folder of this extenion repo
+6. Click on Load Unpacked and select the root folder of this extension repo
 ![image](https://user-images.githubusercontent.com/56744800/140815401-07d3e94b-0e02-4c39-ace9-f691c6b9cde4.png)
 
 On Firefox, click on Load Temporary Add-on and select the zip file in this repo (gifAddonFirefox.zip). Once done, the addon will get added
