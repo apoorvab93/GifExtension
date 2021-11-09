@@ -91,7 +91,7 @@ function img_find()
       url = "https://gifdescriptorservice.azurewebsites.net/gif/uploadvideo"
     }
   });
-  setTimeout(runWhenPageLoaded, 6000);
+  setTimeout(runWhenPageLoaded, 3000);
   function runWhenPageLoaded() {
     var imgs = document.getElementsByTagName("img");
     var imgSrcs = [];      
@@ -131,7 +131,7 @@ function img_find()
               }
             })
             .catch(error => {
-              sleep(2000)
+              sleep(1000)
               .then(() =>
               {
                 console.log("Original attempt failed and will retry");
