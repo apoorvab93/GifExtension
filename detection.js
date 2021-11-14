@@ -26,6 +26,7 @@ let observer = new MutationObserver(mutations => {
            if (addedNode.nodeName === "IMG" || addedNode.getElementsByTagName("img")) {
                console.log("Inserted image", addedNode);
                flag = true;
+               haveAlerted = false;
                break;
             }
         }
@@ -81,6 +82,21 @@ let observer = new MutationObserver(mutations => {
 });
 
 observer.observe(document, { childList: true, subtree: true });
+var haveAlerted = false;
+setInterval(()=> {
+  var imgs = document.getElementsByTagName("img");
+  var allProcessed = true;
+  for (var i = 0; i < imgs.length; i++) 
+  {
+    if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
+      allProcessed = false;
+    }
+  }
+  if(allProcessed && !haveAlerted) {
+    haveAlerted = true;
+    alert('Page is accessibility ready!');
+  }
+}, 1000);
 
 function img_find() 
 {
@@ -96,9 +112,10 @@ function img_find()
     var imgs = document.getElementsByTagName("img");
     var imgSrcs = [];      
     var counter = 0;
+    var detected = false;
     for (var i = 0; i < imgs.length; i++) 
     {
-      if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
+      if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){        
         imgSrcs.push({ img: imgs[i],  url: imgs[i].src, alt: imgs[i].alt});
         
         //Upload File
@@ -125,10 +142,10 @@ function img_find()
                 origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
               }
               console.log(result);
-              if(counter === imgs.length)
-              {
-                alert('Page accessibility ready!');
-              }
+              // if(counter === imgs.length)
+              // {
+              //   alert('Page accessibility ready!');
+              // }
             })
             .catch(error => {
               sleep(1000)
@@ -147,10 +164,10 @@ function img_find()
                       origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
                     }
                     console.log(result);
-                    if(counter === imgs.length)
-                    {
-                      alert('Page accessibility ready!');
-                    }
+                    // if(counter === imgs.length)
+                    // {
+                    //   alert('Page accessibility ready!');
+                    // }
                   })
                   .catch(error => {
                       sleep(2000)
@@ -168,18 +185,18 @@ function img_find()
                               origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
                             }
                             console.log(result);
-                            if(counter === imgs.length)
-                            {
-                              alert('Page accessibility ready!');
-                            }
+                            // if(counter === imgs.length)
+                            // {
+                            //   alert('Page accessibility ready!');
+                            // }
                           })
                           .catch(error => {
                             counter++;
                             console.log('error', error)
-                            if(counter === imgs.length)
-                            {
-                              alert('Page accessibility ready!');
-                            }
+                            // if(counter === imgs.length)
+                            // {
+                            //   alert('Page accessibility ready!');
+                            // }
                           });
 
                       })
@@ -190,10 +207,13 @@ function img_find()
               console.log('error', error)
             });
       //});
-      } else {
-        console.log("Not included " + {url: imgs[i].src, alt: imgs[i].alt});
-      }      
+      } 
     }
+    if(!detected)
+    {
+
+    }
+
     console.log("Finishing up");
   }
 
@@ -254,7 +274,6 @@ function img_find()
           .catch(error => console.log('error', error));
   }
 }
-
 
 function twitter_find()
 {
