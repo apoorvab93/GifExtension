@@ -92,11 +92,15 @@ setInterval(()=> {
       allProcessed = false;
     }
   }
+  if(!imgs.length)
+  {
+    allProcessed = false;
+  }
   if(allProcessed && !haveAlerted) {
     haveAlerted = true;
     alert('Page is accessibility ready!');
   }
-}, 1000);
+}, 2000);
 
 function img_find() 
 {
