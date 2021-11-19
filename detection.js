@@ -81,26 +81,26 @@ let observer = new MutationObserver(mutations => {
    }
 });
 
-observer.observe(document, { childList: true, subtree: true });
-var haveAlerted = false;
-setInterval(()=> {
-  var imgs = document.getElementsByTagName("img");
-  var allProcessed = true;
-  for (var i = 0; i < imgs.length; i++) 
-  {
-    if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
-      allProcessed = false;
-    }
-  }
-  if(!imgs.length)
-  {
-    allProcessed = false;
-  }
-  if(allProcessed && !haveAlerted) {
-    haveAlerted = true;
-    alert('Page is accessibility ready!');
-  }
-}, 2000);
+// observer.observe(document, { childList: true, subtree: true });
+// var haveAlerted = false;
+// setInterval(()=> {
+//   var imgs = document.getElementsByTagName("img");
+//   var allProcessed = true;
+//   for (var i = 0; i < imgs.length; i++) 
+//   {
+//     if(imgs[i].src.toLowerCase().includes(".gif") && !imgs[i].alt){
+//       allProcessed = false;
+//     }
+//   }
+//   if(!imgs.length)
+//   {
+//     allProcessed = false;
+//   }
+//   if(allProcessed && !haveAlerted) {
+//     haveAlerted = true;
+//     alert('Page is accessibility ready!');
+//   }
+// }, 2000);
 
 function img_find() 
 {
@@ -146,10 +146,10 @@ function img_find()
                 origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
               }
               console.log(result);
-              // if(counter === imgs.length)
-              // {
-              //   alert('Page accessibility ready!');
-              // }
+              if(counter === imgs.length)
+              {
+                alert('Page accessibility ready!');
+              }
             })
             .catch(error => {
               sleep(1000)
@@ -168,10 +168,10 @@ function img_find()
                       origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
                     }
                     console.log(result);
-                    // if(counter === imgs.length)
-                    // {
-                    //   alert('Page accessibility ready!');
-                    // }
+                    if(counter === imgs.length)
+                    {
+                      alert('Page accessibility ready!');
+                    }
                   })
                   .catch(error => {
                       sleep(2000)
@@ -189,18 +189,18 @@ function img_find()
                               origImage.img.alt += ". Text detected in image which says - " + result?.detectedText;
                             }
                             console.log(result);
-                            // if(counter === imgs.length)
-                            // {
-                            //   alert('Page accessibility ready!');
-                            // }
+                            if(counter === imgs.length)
+                            {
+                              alert('Page accessibility ready!');
+                            }
                           })
                           .catch(error => {
                             counter++;
                             console.log('error', error)
-                            // if(counter === imgs.length)
-                            // {
-                            //   alert('Page accessibility ready!');
-                            // }
+                            if(counter === imgs.length)
+                            {
+                              alert('Page accessibility ready!');
+                            }
                           });
 
                       })
