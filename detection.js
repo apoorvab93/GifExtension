@@ -81,7 +81,7 @@ let observer = new MutationObserver(mutations => {
    }
 });
 
-// observer.observe(document, { childList: true, subtree: true });
+observer.observe(document, { childList: true, subtree: true });
 // var haveAlerted = false;
 // setInterval(()=> {
 //   var imgs = document.getElementsByTagName("img");
